@@ -16,14 +16,14 @@ const LINE =
   "We've been in stealth mode for three thousand years: every city on Earth runs on our platform and nobody noticed. Today we come out of stealth. Also, I ate your sandwich.";
 
 // Gate mirror: the house gate accepts 1-200 characters of non-whitespace
-// text. Fail loudly here rather than write a line the gate would refuse.
-// Count code points, not UTF-16 units, so the mirror matches the gate's
-// character count exactly even for characters outside the BMP.
+// text on ONE line. Fail loudly here rather than write a line the gate
+// would refuse. Count code points, not UTF-16 units, so the mirror matches
+// the gate's character count exactly even for characters outside the BMP.
 // Note: no trailing newline — writeFileSync writes exactly LINE, so the
 // gated file is 170 chars / 170 bytes, matching the char count the gate
 // measures.
 const charCount = [...LINE].length;
-if (charCount < 1 || charCount > 200 || !LINE.trim()) {
+if (charCount < 1 || charCount > 200 || !LINE.trim() || LINE.includes("\n")) {
   throw new Error(`entry line is ${charCount} chars, outside the 1-200 gate`);
 }
 
